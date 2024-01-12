@@ -44,17 +44,28 @@ const Statistics = ({good, neutral, bad, average, positive}) => {
   if ((good + neutral + bad) === 0) return <p>No feedback given</p>
   return(
     <>
-      <StatisticLine text="good" value={good}></StatisticLine>
-      <StatisticLine text="neutral" value={neutral}></StatisticLine>
-      <StatisticLine text="bad" value={bad}></StatisticLine>
-      <StatisticLine text="all" value={good + neutral + bad}></StatisticLine>
-      <StatisticLine text="average" value={average}></StatisticLine>
-      <StatisticLine text="positive" value={positive + ' %'}></StatisticLine>
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good}></StatisticLine>
+          <StatisticLine text="neutral" value={neutral}></StatisticLine>
+          <StatisticLine text="bad" value={bad}></StatisticLine>
+          <StatisticLine text="all" value={good + neutral + bad}></StatisticLine>
+          <StatisticLine text="average" value={average}></StatisticLine>
+          <StatisticLine text="positive" value={positive + ' %'}></StatisticLine>
+        </tbody>
+      </table>
     </>
   )
 }
 
-const StatisticLine = ({text, value}) => <p>{text} {value}</p>
+const StatisticLine = ({text, value}) => {
+  return(
+      <tr>
+        <th>{text}</th>
+        <td>{value}</td>
+      </tr>
+  )
+}
 
 
 export default App
