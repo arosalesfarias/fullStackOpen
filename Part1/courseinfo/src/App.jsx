@@ -1,12 +1,28 @@
-const Course = ({ course }) => 
+import { useState } from "react";
+
+const Course = ({ course }) => {
+  const {total, setTotal} = useState(0)
+
+  const initTotal = () => {
+    let sum = 0
+    for (let index = 0; index < course.parts.length; index++) {
+      sum += course.parts[index].exercises
+    }
+    return sum
+  }
+
+  return(
   <>
     <Header name={course.name}></Header>
     <Content parts={course.parts}></Content>
+    <Total sum={initTotal()} />
   </>
+  )
+}
 
 const Header = ({ name }) => <h1>{name}</h1>
 
-const Total = ({ sum }) => <p>Number of exercises {sum}</p>
+const Total = ({ sum }) => <p><strong>Total of {sum} exercises</strong></p>
 
 const Part = ({ part }) => 
   <p>
