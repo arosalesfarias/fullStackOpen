@@ -1,21 +1,14 @@
-import { useState } from "react";
-
 const Course = ({ course }) => {
-  const {total, setTotal} = useState(0)
 
-  const initTotal = () => {
-    let sum = 0
-    for (let index = 0; index < course.parts.length; index++) {
-      sum += course.parts[index].exercises
-    }
-    return sum
-  }
+  const initTotal = course.parts.reduce(
+    (sum, v) => sum + v.exercises
+  , 0)
 
   return(
   <>
     <Header name={course.name}></Header>
     <Content parts={course.parts}></Content>
-    <Total sum={initTotal()} />
+    <Total sum={initTotal} />
   </>
   )
 }
