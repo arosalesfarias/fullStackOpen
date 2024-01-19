@@ -8,8 +8,14 @@ const App = () => {
 
   const changeName = event => setNewName(event.target.value)
 
-  const addNumber = event => {
+  const nameExists = person => person.name === newName
+
+  const addClick = event => {
     event.preventDefault()
+    persons.some(nameExists)? alert(`${newName} is already added to phonebook`): addNumber()
+  }
+
+  const addNumber = () =>{
     setPersons(persons.concat({ name : newName }))
     setNewName('')
   }
@@ -22,7 +28,7 @@ const App = () => {
           Name: <input name='newName' value={newName} onChange={changeName}/>
         </div>
         <div>
-          <button type="submit" onClick={addNumber}>add</button>
+          <button type="submit" onClick={addClick}>add</button>
         </div>
       </form>
       <h2>Numbers</h2>
