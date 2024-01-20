@@ -31,30 +31,43 @@ const App = () => {
   }
 
   const personsFilter = () => 
-    persons.filter((person)=> person.name.toLowerCase().includes(nameFilter.toLocaleLowerCase()))
+    persons.filter( person => person.name.toLowerCase().includes(nameFilter.toLocaleLowerCase()))
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-          filter show with<input name='nameFilter' value={nameFilter} onChange={changeNameFilter}/>
-        </div>
-      <h2>add a new</h2>
-      <form>
-        <div>
-          Name: <input name='newName' value={newPerson.name} onChange={changeName}/>
-        </div>
-        <div>
-          Number: <input name='newNumber' value={newPerson.number} onChange={changeNumber}/>
-        </div>
-        <div>
-          <button type="submit" onClick={addClick}>add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {personsFilter().map((person)=> <p key={person.name}>{person.name} {person.number}</p>)}
+      <Filter nameFilter={nameFilter} changeNameFilter={changeNameFilter} />
+      <h3>add a new</h3>
+      <PersonForm newPerson={newPerson} changeName={changeName} changeNumber={changeNumber} addClick={addClick} />
+      <h3>Numbers</h3>
+      <Persons persons={personsFilter()} nameFilter={nameFilter} />
     </div>
   )
 }
+
+const Filter = ({ nameFilter, changeNameFilter}) =>
+  <div>
+    filter show with<input name='nameFilter' value={nameFilter} onChange={changeNameFilter}/>
+  </div>
+
+const PersonForm = ({newPerson, changeName, changeNumber, addClick}) =>
+  <form>
+    <div>
+      Name: <input name='newName' value={newPerson.name} onChange={changeName}/>
+    </div>
+    <div>
+      Number: <input name='newNumber' value={newPerson.number} onChange={changeNumber}/>
+    </div>
+    <div>
+      <button type="submit" onClick={addClick}>add</button>
+    </div>
+  </form>
+
+const Persons = ({ persons }) =>
+  <>
+    {persons.map((p)=> <Person key={p.name} person={p}/>)}
+  </>
+
+const Person = ({ person }) => <p>{person.name} {person.number}</p>
 
 export default App
