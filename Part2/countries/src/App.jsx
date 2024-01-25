@@ -20,6 +20,7 @@ const App= () => {
       <div>
       find countries <input name='countryFilter' value={countryFilter} onChange={changeCountryFilter}/>
       </div>
+      <br/>
       <Result result={result()} />
     </>
   )
@@ -33,7 +34,22 @@ const Result = ({result}) => {
     const [head] = result 
     return <CountryDetail country={head} />
   }
-  return <>{result.map(country => <p key={country.name.common}>{country.name.common}</p>)}</>
+  return <>{result.map(country => <CountryItem key={country.name.common} country={country} />)}</>
+}
+
+const CountryItem = ({country}) =>{
+  const [show, setShow] = useState(false)
+
+  const changeShow = (event) => {
+    setShow(!show)
+  }
+  return(
+    <>
+      {country.name.common} <button value={show} onClick={changeShow}>{show? "hide":"show"}</button>
+      {show? <CountryDetail country={country} />: <></>}
+      <br/>
+    </>
+  )
 }
 
 const CountryDetail = ({country}) => {
@@ -49,6 +65,7 @@ const CountryDetail = ({country}) => {
       {Object.values(country.languages).map( lenguage => <li key={lenguage}>{lenguage}</li>)}
       <br/>
       <img src={flag.png} alt={flag.alt} />
+      <br/>
     </>
   )
 }
