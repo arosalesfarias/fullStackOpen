@@ -38,7 +38,8 @@ const Result = ({result}) => {
 
 const CountryDetail = ({country}) => {
   const [capital] = country.capital
-  
+  const flag = country.flags
+
   return( 
     <>
       <h1>{country.name.common}</h1>
@@ -46,6 +47,8 @@ const CountryDetail = ({country}) => {
       <div>Population: {country.population}</div>
       <h3>Languages</h3>
       {Object.values(country.languages).map( lenguage => <li key={lenguage}>{lenguage}</li>)}
+      <br/>
+      <img src={flag.png} alt={flag.alt} />
     </>
   )
 }
