@@ -38,6 +38,18 @@ const App = () => {
   const personsFilter = () => 
     persons.filter( person => person.name.toLowerCase().includes(nameFilter.toLocaleLowerCase()))
 
+
+  const removePerson = person => {
+    if (window.confirm('Delete '+ person.name + '?' ) == true) {
+      personService.remove(person)
+      .then( data => {
+        setPersons(persons.filter(
+          p => p.id !== person.id
+        ))
+      })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -45,7 +57,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm newPerson={newPerson} changeName={changeName} changeNumber={changeNumber} addClick={addClick} />
       <h3>Numbers</h3>
-      <Persons persons={personsFilter()} nameFilter={nameFilter} />
+      <Persons persons={personsFilter()} removePerson={removePerson}/>
     </div>
   )
 }
@@ -68,11 +80,19 @@ const PersonForm = ({newPerson, changeName, changeNumber, addClick}) =>
     </div>
   </form>
 
-const Persons = ({ persons }) =>
+const Persons = ({ persons, removePerson }) =>
   <>
-    {persons.map((p)=> <Person key={p.name} person={p}/>)}
+    {persons.map((p)=> <Person key={p.name} person={p} removePerson={removePerson} />)}
   </>
 
-const Person = ({ person }) => <p>{person.name} {person.number}</p>
+const Person = ({ person, removePerson }) => {
+  const removeButton = () => removePerson(person)
+
+  return(
+  <>
+    <p>{person.name} {person.number} <button onClick={removeButton}>delete</button></p>
+  </>
+  )
+}
 
 export default App

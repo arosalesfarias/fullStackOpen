@@ -11,7 +11,13 @@ const post = (person) => {
     .then( res => res.data)
 }
 
+const remove = (person) => {
+    return axios.delete(url +'/'+ person.id)
+    .then(res => res.data)
+}
+
 export default {
     getAll,
-    post
+    post,
+    remove
 }
