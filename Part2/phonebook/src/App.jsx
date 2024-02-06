@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
+import axios from 'axios'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -20,11 +21,11 @@ const App = () => {
 
   const changeNameFilter = event => setNameFilter(event.target.value)
 
-  const nameExists = person => person.name === newPerson.name
+  const nameExists = person => person.name.toLocaleLowerCase() === newPerson.name.toLocaleLowerCase()
 
   const addClick = event => {
     event.preventDefault()
-    persons.some(nameExists)? alert(`${newPerson.name} is already added to phonebook`): addNumber()
+    persons.some(nameExists)? replaceNumber(): addNumber()
   }
 
   const addNumber = () => {
@@ -35,9 +36,25 @@ const App = () => {
     })
   }
 
+  const replaceNumber = () => {
+    const [person] = persons.filter(nameExists)
+    if( person.number === newPerson.number){
+      alert(`${newPerson.name} is already added to phonebook`)
+    }else{
+      if(window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`) === true){
+        const replacePerson = { ...newPerson, id: person.id }
+        personService.update(replacePerson)
+        .then(data => {
+          const newPersons = persons.filter( p => p.id !== replacePerson.id)
+          setPersons(newPersons.concat(replacePerson))
+        })
+        .catch(error => alert(`${replacePerson.name} ${error.response.statusText}`))
+      }
+    }
+  }
+
   const personsFilter = () => 
     persons.filter( person => person.name.toLowerCase().includes(nameFilter.toLocaleLowerCase()))
-
 
   const removePerson = person => {
     if (window.confirm('Delete '+ person.name + '?' ) == true) {
