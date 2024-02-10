@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
-import axios from 'axios'
+import SuccessMessage from './components/SuccessMessage'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -8,6 +8,8 @@ const App = () => {
 
   const [ newPerson, setNewPerson ] = useState(returnPerson('',''))
   const [ nameFilter, setNameFilter] = useState('')
+  
+  const [ message, setMessage ] = useState(null)
 
   const personsEffect = () => {
     personService.getAll()
@@ -33,6 +35,7 @@ const App = () => {
     .then( data => {
         setPersons(persons.concat(newPerson))
         setNewPerson(returnPerson('','')) 
+        displayMessage(`Added ${newPerson.name}`)
     })
   }
 
@@ -47,10 +50,17 @@ const App = () => {
         .then(data => {
           const newPersons = persons.filter( p => p.id !== replacePerson.id)
           setPersons(newPersons.concat(replacePerson))
+          displayMessage(`${replacePerson.name} has replaced the number`)
         })
         .catch(error => alert(`${replacePerson.name} ${error.response.statusText}`))
       }
     }
+  }
+
+  const displayMessage = (message) => {
+    setMessage(message)
+    setTimeout(()=> setMessage(null)
+    ,5000)
   }
 
   const personsFilter = () => 
@@ -70,6 +80,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <SuccessMessage message={message}/>
       <Filter nameFilter={nameFilter} changeNameFilter={changeNameFilter} />
       <h3>add a new</h3>
       <PersonForm newPerson={newPerson} changeName={changeName} changeNumber={changeNumber} addClick={addClick} />
