@@ -57,6 +57,8 @@ const App = () => {
             displayMessage(`Information of ${replacePerson.name} has been removed from server`,false)
           else
             displayMessage(`${replacePerson.name} ${error.response.statusText}`,false)
+
+          setPersons(persons.filter(p => p.id !== replacePerson.id))
         })
       }
     }
