@@ -33,7 +33,7 @@ const App = () => {
   const addNumber = () => {
     personService.post(newPerson)
     .then( data => {
-        setPersons(persons.concat(newPerson))
+        setPersons(persons.concat({...newPerson, id: data.id}))
         setNewPerson(returnPerson('','')) 
         displayMessage(`Added ${newPerson.name}`)
     })
