@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
-import SuccessMessage from './components/SuccessMessage'
+import Message from './components/Message'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -9,7 +9,7 @@ const App = () => {
   const [ newPerson, setNewPerson ] = useState(returnPerson('',''))
   const [ nameFilter, setNameFilter] = useState('')
   
-  const [ message, setMessage ] = useState(null)
+  const [ message, setMessage ] = useState({text:null, isSuccess: null})
 
   const personsEffect = () => {
     personService.getAll()
@@ -35,7 +35,7 @@ const App = () => {
     .then( data => {
         setPersons(persons.concat({...newPerson, id: data.id}))
         setNewPerson(returnPerson('','')) 
-        displayMessage(`Added ${newPerson.name}`)
+        displayMessage(`Added ${newPerson.name}`,true)
     })
   }
 
@@ -50,16 +50,21 @@ const App = () => {
         .then(data => {
           const newPersons = persons.filter( p => p.id !== replacePerson.id)
           setPersons(newPersons.concat(replacePerson))
-          displayMessage(`${replacePerson.name} has replaced the number`)
+          displayMessage(`${replacePerson.name} has replaced the number`,true)
         })
-        .catch(error => alert(`${replacePerson.name} ${error.response.statusText}`))
+        .catch(error => {
+          if (error.response.status === 404)
+            displayMessage(`Information of ${replacePerson.name} has been removed from server`,false)
+          else
+            displayMessage(`${replacePerson.name} ${error.response.statusText}`,false)
+        })
       }
     }
   }
 
-  const displayMessage = (message) => {
-    setMessage(message)
-    setTimeout(()=> setMessage(null)
+  const displayMessage = (text,isSuccess) => {
+    setMessage({text,isSuccess})
+    setTimeout(()=> setMessage({text: null, isSuccess: null})
     ,5000)
   }
 
@@ -80,7 +85,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <SuccessMessage message={message}/>
+      <Message message={message}/>
       <Filter nameFilter={nameFilter} changeNameFilter={changeNameFilter} />
       <h3>add a new</h3>
       <PersonForm newPerson={newPerson} changeName={changeName} changeNumber={changeNumber} addClick={addClick} />
