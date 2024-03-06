@@ -6,7 +6,7 @@ const App= () => {
   const [countryFilter, setCountryFilter] = useState('')
 
   const countriesEffect = () => {
-    axios.get('https://restcountries.com/v3.1/all')
+    axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')//'https://restcountries.com/v3.1/all'
       .then(res => setCountries(res.data))
   }
   useEffect(countriesEffect,[])
@@ -60,7 +60,7 @@ const CountryDetail = ({country}) => {
     <>
       <h1>{country.name.common}</h1>
       <div>Capital: {capital}</div>
-      <div>Population: {country.population}</div>
+      <div>Area: {country.area}</div>
       <h3>Languages</h3>
       {Object.values(country.languages).map( lenguage => <li key={lenguage}>{lenguage}</li>)}
       <br/>
