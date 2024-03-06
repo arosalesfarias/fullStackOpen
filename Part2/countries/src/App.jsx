@@ -6,7 +6,7 @@ const App= () => {
   const [countryFilter, setCountryFilter] = useState('')
 
   const countriesEffect = () => {
-    axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')//'https://restcountries.com/v3.1/all'
+    axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')
       .then(res => setCountries(res.data))
   }
   useEffect(countriesEffect,[])
