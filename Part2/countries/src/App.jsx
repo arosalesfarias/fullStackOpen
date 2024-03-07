@@ -53,9 +53,18 @@ const CountryItem = ({country}) =>{
 }
 
 const CountryDetail = ({country}) => {
+  const api_key = import.meta.env.VITE_SOME_KEY
   const [capital] = country.capital
   const flag = country.flags
-
+  const [weather, setWeather] = useState(null)
+  const [lat,lng] = country.capitalInfo.latlng
+  console.log(lat,lng)
+  const WeatherEffect = () => {
+    axios.get('https://api.openweathermap.org/data/3.0/onecall?lat='+lat+'&lon='+lng+'&appid='+api_key)
+      .then(res => setWeather(res.data))
+  }
+  useEffect(WeatherEffect,[])
+  if (!weather) return null
   return( 
     <>
       <h1>{country.name.common}</h1>
@@ -66,6 +75,9 @@ const CountryDetail = ({country}) => {
       <br/>
       <img src={flag.png} alt={flag.alt} />
       <br/>
+      <h2>Weather in {capital}</h2>
+      <div>temperature {(weather.current.temp - 273.15).toFixed(2) } Celsius</div>
+      <div>wind { weather.current.wind_speed } m/s</div>
     </>
   )
 }
