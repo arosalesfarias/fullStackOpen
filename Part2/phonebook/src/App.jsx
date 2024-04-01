@@ -13,7 +13,9 @@ const App = () => {
 
   const personsEffect = () => {
     personService.getAll()
-    .then(data => setPersons(data))
+    .then(data => {
+      if (Array.isArray(data)) setPersons(data)
+    })
   }
   useEffect(personsEffect,[])
 
