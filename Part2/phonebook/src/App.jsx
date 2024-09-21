@@ -58,12 +58,15 @@ const App = () => {
             displayMessage(`${replacePerson.name} has replaced the number`, true)
           })
           .catch(error => {
-            if (error.response.status === 404)
+            console.log(error)
+            if (error.response.status === 404){
               displayMessage(`Information of ${replacePerson.name} has been removed from server`, false)
+              setPersons(persons.filter(p => p.id !== replacePerson.id))
+            }
+            else if (error.response.status === 400)
+              displayMessage(error.response.data.error, false)
             else
               displayMessage(`${replacePerson.name} ${error.response.statusText}`, false)
-
-            setPersons(persons.filter(p => p.id !== replacePerson.id))
           })
       }
     }
