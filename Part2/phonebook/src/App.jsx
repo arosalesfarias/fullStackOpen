@@ -58,7 +58,6 @@ const App = () => {
             displayMessage(`${replacePerson.name} has replaced the number`, true)
           })
           .catch(error => {
-            console.log(error)
             if (error.response.status === 404){
               displayMessage(`Information of ${replacePerson.name} has been removed from server`, false)
               setPersons(persons.filter(p => p.id !== replacePerson.id))
