@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant browser
     participant serverSPA
@@ -27,3 +28,4 @@ sequenceDiagram
     deactivate serverSPA
 
     Note right of browser: The browser executes the callback function that renders the notes
+```

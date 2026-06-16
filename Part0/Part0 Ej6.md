@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant user
     participant browser
@@ -15,3 +16,4 @@ sequenceDiagram
     server-->>browser: Response {"message":"note created"}
     deactivate server
     Note right of browser: Browser don't show the response in the screen
+```
